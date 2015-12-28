@@ -2,14 +2,20 @@ package com.shiro.spring.realm;
 
 import java.util.Set;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.shiro.spring.pojo.User;
@@ -54,6 +60,23 @@ public class UserRealm extends AuthorizingRealm {
 			User user=userService.getByUserName(userName);
 			if(user != null){
 				AuthenticationInfo authcInfo=new SimpleAuthenticationInfo(user.getUserName(),user.getPassword(), super.getName());
+				
+				Subject subject = SecurityUtils.getSubject();
+				Session session = subject.getSession();
+				System.out.println("seesionId: " + session.getId());
+				System.out.println("host: " + session.getHost());
+				System.out.println("timeout: " + session.getTimeout());
+				System.out.println("lastAccessTime: " + session.getLastAccessTime());
+				
+				SecurityManager securityManager = SecurityUtils.getSecurityManager();
+				System.out.println("securityManager: " + securityManager.getClass().getName());
+				
+				if (securityManager instanceof DefaultWebSecurityManager) {
+					SessionManager sessionManager = ((DefaultWebSecurityManager) securityManager).getSessionManager();
+					System.out.println("sessionManager: " + sessionManager.getClass().getName());
+				}
+				
+				
 				return authcInfo;
 			}else{
 				return null;				

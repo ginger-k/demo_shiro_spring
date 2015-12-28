@@ -24,6 +24,11 @@
     </bean> -->
 
     <!-- 会话管理器 -->
+	<!-- 
+		DefaultSessionManager：DefaultSecurityManager使用的默认实现，用于JavaSE 环境
+		ServletContainerSessionManager：DefaultWebSecurityManager使用的默认实现，用于Web环境，其直接使用Servlet 容器的会话
+		DefaultWebSessionManager： 用于Web 环境的实现，可以替代ServletContainerSessionManager，自己维护着会话，直接废弃了Servlet容器的会话管理。 
+	-->
     <!-- <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
         <property name="globalSessionTimeout" value="1800000"/>
         <property name="deleteInvalidSessions" value="true"/>
@@ -51,6 +56,7 @@
     </bean>
 
 
+	<!-- org.apache.shiro.web.filter.mgt.DefaultFilter -->
  	<!-- 基于Form表单的身份验证过滤器 -->
     <bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
         <property name="usernameParam" value="username"/><!-- 默认 -->
