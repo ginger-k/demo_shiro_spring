@@ -62,20 +62,23 @@ public class UserRealm extends AuthorizingRealm {
 				AuthenticationInfo authcInfo=new SimpleAuthenticationInfo(user.getUserName(),user.getPassword(), super.getName());
 				
 				Subject subject = SecurityUtils.getSubject();
+				System.out.println("subject: " + subject.getClass().getName());
+				
 				Session session = subject.getSession();
+				System.out.println("session: " + session.getClass().getName());
 				System.out.println("seesionId: " + session.getId());
 				System.out.println("host: " + session.getHost());
 				System.out.println("timeout: " + session.getTimeout());
 				System.out.println("lastAccessTime: " + session.getLastAccessTime());
 				
 				SecurityManager securityManager = SecurityUtils.getSecurityManager();
-				System.out.println("securityManager: " + securityManager.getClass().getName());
 				
 				if (securityManager instanceof DefaultWebSecurityManager) {
 					SessionManager sessionManager = ((DefaultWebSecurityManager) securityManager).getSessionManager();
 					System.out.println("sessionManager: " + sessionManager.getClass().getName());
 				}
 				
+				System.out.println("securityManager: " + securityManager.getClass().getName());
 				
 				return authcInfo;
 			}else{
